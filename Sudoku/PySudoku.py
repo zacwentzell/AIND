@@ -1,7 +1,7 @@
 import sys, os, random, pygame
 sys.path.append(os.path.join("objects"))
-import SudokuSquare
-from GameResources import *
+from objects import SudokuSquare
+from objects.GameResources import *
 
 digits = '123456789'
 rows = 'ABCDEFGHI'
