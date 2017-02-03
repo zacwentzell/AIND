@@ -30,6 +30,7 @@ def naked_twins(values):
             2+2
         # use dict for box_set
         # use a standard unitlist dict, removing solves, and generate from that link with dicts and delete to delete across rows, columns, and squares
+        # pop from dict
         box_set_dict = {}
         dd = defaultdict(list)
 
@@ -117,7 +118,6 @@ def only_choice(values):
     Output: Resulting Sudoku in dictionary form after filling in only choices.
     """
     new_values = values.copy()  # note: do not modify original values
-    # TODO: Implement only choice strategy here
 
     for box_set in unitlist:
         for number in '123456789':
@@ -191,14 +191,19 @@ def solve(grid):
     """
     return search(grid_values(grid))
 
-def validate(solved_values):
+def validate(solved_values, initial_values):
     for index, unit in enumerate(unitlist):
-        values = [solved_values[box] for box in unit]
-        for value in values:
-            assert len(value) == 1
-            assert value in '123456789'
+        values = []
+        for box in unit:
+            solved_value = solved_values[box]
+            assert solved_value in initial_values[box]
+            values.append(solved_value)
+
+        # check no dup constraint for unit
         c = Counter(values)
-        assert c.most_common()[0][1]==1, "ERROR at unit {}, {}".format(index, c.most_common()[0])
+        assert c == {'1': 1, '2': 1, '3': 1, '4': 1, '5': 1, '6': 1, '7': 1, '8': 1, '9': 1}
+
+    return True
 
 
 rows = 'ABCDEFGHI'
@@ -213,25 +218,18 @@ column_units = [cross(rows, c) for c in cols]
 diag1 = [[x for x in map(''.join, zip(rows, cols))]]
 diag2 = [[x for x in map(''.join, zip(rows, rev_cols))]]
 square_units = [cross(rs, cs) for rs in ('ABC', 'DEF', 'GHI') for cs in ('123', '456', '789')]
-unitlist = row_units + column_units + square_units + diag1 + diag2
+unitlist = diag1 + diag2 + row_units + column_units + square_units
 units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
 
 if __name__ == '__main__':
     # diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-    # display(solve(diag_sudoku_grid))
-
-    from solution_test import TestNakedTwins
-
-    display(TestNakedTwins.before_naked_twins_2)
-    print()
-    display(naked_twins(TestNakedTwins.before_naked_twins_2))
-    # print()
-    # display(naked_twins(TestNakedTwins.before_naked_twins_1))
-    # print()
-    display(TestNakedTwins.possible_solutions_2[0])
-    # print()
-    # display(TestNakedTwins.possible_solutions_1[1])
+    from solution_test import TestDiagonalSudoku
+    diag_sudoku_grid = TestDiagonalSudoku.diagonal_grid
+    solved_sudoku = solve(diag_sudoku_grid)
+    validate(solved_sudoku, grid_values(diag_sudoku_grid))
+    display(solve(diag_sudoku_grid))
+    display(TestDiagonalSudoku.solved_diag_sudoku)
 
     # try:
     #     from visualize import visualize_assignments
