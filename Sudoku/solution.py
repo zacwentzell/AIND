@@ -58,7 +58,7 @@ def naked_twins(values):
 
 def cross(A, B):
     """Cross product of elements in A and elements in B."""
-    return [a+b for b in B for a in A]
+    return [s+t for s in A for t in B]
 
 
 def grid_values(grid):
@@ -223,19 +223,14 @@ units = dict((s, [u for u in unitlist if s in u]) for s in boxes)
 peers = dict((s, set(sum(units[s], []))-set([s])) for s in boxes)
 
 if __name__ == '__main__':
-    # diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
-    from solution_test import TestDiagonalSudoku
-    diag_sudoku_grid = TestDiagonalSudoku.diagonal_grid
-    solved_sudoku = solve(diag_sudoku_grid)
-    validate(solved_sudoku, grid_values(diag_sudoku_grid))
+    diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
     display(solve(diag_sudoku_grid))
-    display(TestDiagonalSudoku.solved_diag_sudoku)
 
-    # try:
-    #     from visualize import visualize_assignments
-    #     visualize_assignments(assignments)
-    #
-    # except SystemExit:
-    #     pass
-    # except Exception as e:
-    #     print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')
+    try:
+        from visualize import visualize_assignments
+        visualize_assignments(assignments)
+
+    except SystemExit:
+        pass
+    except:
+        print('We could not visualize your board due to a pygame issue. Not a problem! It is not a requirement.')

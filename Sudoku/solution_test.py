@@ -92,9 +92,7 @@ class TestDiagonalSudoku(unittest.TestCase):
                           'D1': '5'}
 
     def test_solve(self):
-        mine = solution.solve(self.diagonal_grid)
-        solution.validate(solved_values=mine, initial_values=solution.grid_values(self.diagonal_grid))
-        self.assertEqual(mine, self.solved_diag_sudoku)
+        self.assertEqual(solution.solve(self.diagonal_grid), self.solved_diag_sudoku)
 
 if __name__ == '__main__':
     unittest.main()
