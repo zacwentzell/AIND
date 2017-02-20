@@ -44,7 +44,6 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    # TODO: finish this function!
     opponent = game.get_opponent(player)
 
     player_moves = game.get_legal_moves(player)
@@ -78,9 +77,10 @@ def custom_score(game, player):
     # return sign(move_diff)*(move_diff)**2 + len(player_next_moves) - len(opponent_next_moves)
     # return move_diff + sign(move_diff)*max(num_player_moves/num_opponent_moves, num_opponent_moves/num_player_moves) #+ 2*len(player_next_moves)
     # return move_diff + sign(move_diff) * max(num_player_moves / num_opponent_moves, num_opponent_moves / num_player_moves)*100.0 - distance_to_opponent
-    # calc_1 = ((num_player_moves - num_opponent_moves) / min(num_player_moves, num_opponent_moves))
-    return (len(player_next_moves) - len(opponent_next_moves))**3 + move_diff
+    calc_1 = ((num_player_moves - num_opponent_moves) / min(num_player_moves, num_opponent_moves))
+    # TODO: perform through analysis of function considering stability at various depths
 
+    return ((len(player_next_moves) - len(opponent_next_moves))/min(len(player_next_moves)+1, len(opponent_next_moves)+1))**3 + move_diff
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -169,6 +169,7 @@ class CustomPlayer:
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
+        # TODO: create dictionary of opening moves, cross_check against different opponent types
 
         if legal_moves:
             best_move, utility = random.choice(legal_moves), 0.0
