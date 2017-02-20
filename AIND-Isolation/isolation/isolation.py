@@ -299,7 +299,7 @@ class Board(object):
 
         return out
 
-    def play(self, time_limit=TIME_LIMIT_MILLIS):
+    def play(self, time_limit=TIME_LIMIT_MILLIS, printing=False):
         """
         Execute a match between the players by alternately soliciting them
         to select a move and applying it in the game.
@@ -348,4 +348,8 @@ class Board(object):
             if curr_move not in legal_player_moves:
                 return self.__inactive_player__, move_history, "illegal move"
 
+            if printing:
+                print('Player Move: {}'.format(self.active_player))
             self.apply_move(curr_move)
+            if printing:
+                print(self.to_string())
